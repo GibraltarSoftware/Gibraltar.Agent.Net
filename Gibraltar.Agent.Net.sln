@@ -1,0 +1,33 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Agent.Net", "src\Agent.Net\Agent.Net.csproj", "{08465AE7-B30A-48A8-BA98-CC6E66E61663}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{15B5A4DB-1934-4D08-80AC-367EC911C977}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\NuGet.Config = .nuget\NuGet.Config
+		.nuget\NuGet.exe = .nuget\NuGet.exe
+		.nuget\NuGet.targets = .nuget\NuGet.targets
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Agent.Net.Test", "src\Agent.Net.Test\Agent.Net.Test.csproj", "{8569411A-A8D4-42F8-BA85-AA9AAB1EF276}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{08465AE7-B30A-48A8-BA98-CC6E66E61663}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{08465AE7-B30A-48A8-BA98-CC6E66E61663}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{08465AE7-B30A-48A8-BA98-CC6E66E61663}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{08465AE7-B30A-48A8-BA98-CC6E66E61663}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8569411A-A8D4-42F8-BA85-AA9AAB1EF276}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8569411A-A8D4-42F8-BA85-AA9AAB1EF276}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8569411A-A8D4-42F8-BA85-AA9AAB1EF276}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8569411A-A8D4-42F8-BA85-AA9AAB1EF276}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
