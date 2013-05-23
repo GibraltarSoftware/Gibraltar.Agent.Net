@@ -1,4 +1,23 @@
-﻿using System;
+﻿#region File Header and License
+// /*
+//    ConnectivityMonitor.cs
+//    Copyright 2013 Gibraltar Software, Inc.
+//    
+//    Licensed under the Apache License, Version 2.0 (the "License");
+//    you may not use this file except in compliance with the License.
+//    You may obtain a copy of the License at
+// 
+//        http://www.apache.org/licenses/LICENSE-2.0
+// 
+//    Unless required by applicable law or agreed to in writing, software
+//    distributed under the License is distributed on an "AS IS" BASIS,
+//    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//    See the License for the specific language governing permissions and
+//    limitations under the License.
+// */
+#endregion
+
+using System;
 using System.Diagnostics;
 using System.Threading;
 using System.Net.NetworkInformation;
@@ -33,7 +52,8 @@ namespace Gibraltar.Agent.Net
         /// </summary>
         private const string PingContent = "Gibraltar Loupe Connection Tests"; //exactly 32 chars
 
-        internal const string LogCategory = "System.Net.Connectivity";
+        internal const string LogCategory = "System.Connectivity";
+        internal const string MetricCategory = "Connectivity";
 
         private readonly string _ipAddress;
         private readonly object _lock = new object();
@@ -194,7 +214,7 @@ namespace Gibraltar.Agent.Net
                 NetworkChange.NetworkAvailabilityChanged -= OnNetworkAvailabilityChange;
                 lock(_lock)
                 {
-                    _isMonitoring = false;
+                    IsMonitored = false; //go through the property setter so we get the log messages, etc.
                     _timer.Dispose();
                 }
             }
@@ -220,10 +240,16 @@ namespace Gibraltar.Agent.Net
                 {
                     //we need to *start* the monitor
                     _timer.Change(0, System.Threading.Timeout.Infinite);
+
+                    Log.Verbose(LogCategory, string.Format("Starting connectivity monitor for '{0}'", IpAddress),
+                        "Check Interval: {0:N0} seconds\r\nFailure Retries: {1:N0}", _timeout, _retries);
                 }
                 else
                 {
                     _timer.Change(System.Threading.Timeout.Infinite, System.Threading.Timeout.Infinite); //disable the timer
+
+                    Log.Verbose(LogCategory, string.Format("Stopping connectivity monitor for '{0}'", IpAddress),
+                        "Check Interval: {0:N0} seconds\r\nFailure Retries: {1:N0}", _timeout, _retries);
                 }
             }
         }
@@ -240,7 +266,7 @@ namespace Gibraltar.Agent.Net
             }
             catch (Exception ex)
             {
-                Debug.Print("Connectivity Monitor: Unable to poll connection due to {0}.\r\nIP Address being tested: {1}", ex.GetType(), IpAddress);
+                Log.Information(ex, LogCategory, string.Format("Unable to Poll Connection To '{1}' Due to {0}", ex.GetType(), IpAddress), ex.Message);
 
                 lock(_lock)
                 {
@@ -275,15 +301,13 @@ namespace Gibraltar.Agent.Net
                 //we failed - so is this enough to trip our failure or not?
                 lock(_lock)
                 {
-#if DEBUG
-                    if (e.Error != null)    
-                        Debug.Print("Connectivity Monitor: Failed in poll due to {0}.\r\nIP Address being tested: {1}\r\nPrevious failures: {2:N0}", e.Error.GetType(), IpAddress, _failureCount);
-                    else
-                        Debug.Print("Connectivity Monitor: Failed in poll due to {0}.\r\nIP Address being tested: {1}\r\nPrevious failures: {2:N0}", e.Reply.Status, IpAddress, _failureCount);
-#endif
                     _failureCount++;
-                    if ((_failureCount > _retries) && (_isAccessible))
+                    if (((_failureCount > _retries) || (NetworkInterface.GetIsNetworkAvailable() == false))
+                        && (_isAccessible))
                     {
+                        Log.Information(e.Error, LogCategory, string.Format("Connectivity Lost To '{0}'", IpAddress), "Failed Tests: {0:N0}\r\nError: {1}\r\nICMP Status: {2}", _failureCount, 
+                            ((e.Error == null) ? "(None)" : e.Error.GetType().ToString()), 
+                            ((e.Reply == null) ? "(None)" : e.Reply.Status.ToString()));
                         _isAccessible = false;
                         raiseEvent = true;
                     }
@@ -295,13 +319,16 @@ namespace Gibraltar.Agent.Net
 
                 lock(_lock)
                 {
-                    _failureCount = 0;
-
                     if (_isAccessible == false)
                     {
+                        if (_failureCount > 0) //see if we previously failed so we don't bother logging when we initially detect the connection
+                            Log.Information(LogCategory, string.Format("Connectivity Restored To '{0}'", IpAddress), "Failed Tests: {0:N0}", _failureCount);
+
                         _isAccessible = true;
                         raiseEvent = true;
                     }
+                    
+                    _failureCount = 0;
                 }
             }
 
@@ -357,7 +384,7 @@ namespace Gibraltar.Agent.Net
         private void RecordStatusMetric(string ipAddress, bool isAccessible, bool accessibleChanged, long latency)
         {
             //first our sampled metric for latency...
-            var metric = SampledMetric.Register("Loupe", LogCategory, "latency", SamplingType.RawCount, "ms", 
+            var metric = SampledMetric.Register("Loupe", MetricCategory, "latency", SamplingType.RawCount, "ms", 
                 "Latency", "The latency of the connection to this endpoint (if available)", ipAddress);
 
             if (isAccessible)

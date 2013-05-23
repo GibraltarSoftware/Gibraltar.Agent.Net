@@ -22,19 +22,23 @@
 	<s:Boolean x:Key="/Default/CodeStyle/CodeFormatting/CSharpFormat/WRAP_LINES/@EntryValue">False</s:Boolean>
 	<s:Boolean x:Key="/Default/CodeStyle/CodeFormatting/VBFormat/SPACE_BEFORE_INVOCATION_PARENTHESES/@EntryValue">True</s:Boolean>
 	<s:Boolean x:Key="/Default/CodeStyle/CodeFormatting/VBFormat/SPACE_BEFORE_METHOD_PARENTHESES/@EntryValue">True</s:Boolean>
-	<s:String x:Key="/Default/CodeStyle/FileHeader/FileHeaderRegionName/@EntryValue">File Header</s:String>
-	<s:String x:Key="/Default/CodeStyle/FileHeader/FileHeaderText/@EntryValue">/********************************************************************&#xD;
- * COPYRIGHT:&#xD;
- *    This software program is furnished to the user under license&#xD;
- *    by eSymmetrix, Inc, and use thereof is subject to applicable &#xD;
- *    U.S. and international law. This software program may not be &#xD;
- *    reproduced, transmitted, or disclosed to third parties, in &#xD;
- *    whole or in part, in any form or by any manner, electronic or&#xD;
- *    mechanical, without the express written consent of eSymmetrix, Inc,&#xD;
- *    except to the extent provided for by applicable license.&#xD;
- *&#xD;
- *    Copyright © 2008 by eSymmetrix, Inc.  All rights reserved.&#xD;
- *******************************************************************/</s:String>
+	<s:String x:Key="/Default/CodeStyle/FileHeader/FileHeaderRegionName/@EntryValue">File Header and License</s:String>
+	<s:String x:Key="/Default/CodeStyle/FileHeader/FileHeaderText/@EntryValue">/*&#xD;
+   $FILENAME$&#xD;
+   Copyright 2013 Gibraltar Software, Inc.&#xD;
+   &#xD;
+   Licensed under the Apache License, Version 2.0 (the "License");&#xD;
+   you may not use this file except in compliance with the License.&#xD;
+   You may obtain a copy of the License at&#xD;
+&#xD;
+       http://www.apache.org/licenses/LICENSE-2.0&#xD;
+&#xD;
+   Unless required by applicable law or agreed to in writing, software&#xD;
+   distributed under the License is distributed on an "AS IS" BASIS,&#xD;
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.&#xD;
+   See the License for the specific language governing permissions and&#xD;
+   limitations under the License.&#xD;
+*/</s:String>
 	<s:String x:Key="/Default/CodeStyle/Naming/CSharpNaming/PredefinedNamingRules/=Locals/@EntryIndexedValue">&lt;Policy Inspect="True" Prefix="" Suffix="" Style="aaBb" /&gt;</s:String>
 	<s:String x:Key="/Default/CodeStyle/Naming/CSharpNaming/PredefinedNamingRules/=Parameters/@EntryIndexedValue">&lt;Policy Inspect="True" Prefix="" Suffix="" Style="aaBb" /&gt;</s:String>
 	<s:String x:Key="/Default/CodeStyle/Naming/CSharpNaming/PredefinedNamingRules/=PrivateInstanceFields/@EntryIndexedValue">&lt;Policy Inspect="True" Prefix="_" Suffix="" Style="aaBb" /&gt;</s:String>
